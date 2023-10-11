@@ -30,20 +30,6 @@ public class PlayList {
         this.songs.add(song);
         return this.songs;
     }
-
-
-    public void displaySongs() {
-        if (songs.isEmpty()) {
-            System.out.println("Your playlist is empty, try adding new songs!");
-        } else {
-            for (Song song : songs) {
-                System.out.println("[" + song.getName() + " by:" + song.getArtist()
-                        + " rating: " + song.getRating() + "]");
-            }
-        }
-
-    }
-
 }
 
 

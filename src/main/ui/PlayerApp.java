@@ -58,7 +58,7 @@ public class PlayerApp {
             myList.addSong(newSong);
             System.out.println(newSong.getName() + "Has been added to " + myList.getName());
         } else if (command.equals("d")) {
-            myList.displaySongs();
+            displaySongs();
         } else if (command.equals("r")) {
             doRemove();
         } else {
@@ -84,7 +84,7 @@ public class PlayerApp {
 
     private void doRemove() {
         System.out.println("Enter the name of the Song to remove: ");
-        myList.displaySongs();
+        displaySongs();
         String name = input.next();
 
         for (int i = 0;i < myList.getSongs().size();i++) {
