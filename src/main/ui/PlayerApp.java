@@ -41,11 +41,13 @@ public class PlayerApp {
 
 
     private void init() {
-        myList = new PlayList("My Playlist");
-
+        System.out.println("\nWelcome to YOUR MP3 Player APP");
+        System.out.println("\nLets create a playlist for you!");
+        System.out.println("\nName your playlist:");
         input = new Scanner(System.in);
         input.useDelimiter("\n");
-
+        String x = input.next();
+        myList = new PlayList(x);
     }
 
     // MODIFIES: this
@@ -95,6 +97,20 @@ public class PlayerApp {
             }
         }
     }
+
+
+    public void displaySongs() {
+        if (myList.getSongs().isEmpty()) {
+            System.out.println("Your playlist is empty, try adding new songs!");
+        } else {
+            for (Song song : myList.getSongs()) {
+                System.out.println("[" + song.getName() + " by:" + song.getArtist()
+                        + " rating: " + song.getRating() + "]");
+            }
+        }
+
+    }
+
 
 
 

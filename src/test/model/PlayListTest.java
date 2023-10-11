@@ -26,6 +26,12 @@ class PlayListTest {
     }
 
     @Test
+    void testConstructor() {
+        assertEquals("NewList", testPlaylist.getName());
+        assertTrue(testPlaylist.getSongs().isEmpty());
+    }
+
+    @Test
     void addSongsOneTime() {
         assertEquals(0, testPlaylist.getSongs().size());
         testPlaylist.addSong(testSong1);
