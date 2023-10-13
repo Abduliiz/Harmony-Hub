@@ -81,7 +81,6 @@ public class PlayerApp {
         String artist = input.next();
         System.out.println("Enter the Format of the Song (i.e MP3, WAV): ");
         String format = input.next();
-        format.toUpperCase();
         System.out.println("How much do you rate this song out of 10? ");
         Double rating = input.nextDouble();
 

@@ -1,7 +1,5 @@
 package model;
 
-import java.util.WeakHashMap;
-
 // represents a song that includes the name, artist, format, and rating of the song
 public class Song {
     private String name;       // the name of the song
@@ -15,7 +13,6 @@ public class Song {
     public Song(String songName, String artistName, String format, double songRating) {
         this.name = songName;
         this.artist = artistName;
-        this.format = format;
         this.rating = songRating;
 
         if (!format.startsWith(".")) {
@@ -27,6 +24,8 @@ public class Song {
         } else {
             this.format = format;
         }
+
+        this.format = this.format.toUpperCase();
     }
 
 
