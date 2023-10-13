@@ -11,8 +11,7 @@ taking at The University of British Columbia (UBC)
 
 
 
-Ideas:
-music player
+**Vision of Features:**
 - play a song 
 - pause 
 - playlist - adding/removing songs
@@ -50,6 +49,7 @@ I am really interested in this project because i use a music player daily in my 
 </span>
 
 - As a user, I want to be able to add songs to my playlist. 
+- As a user, I want to be able to remove songs from my playlist.
 - As a user, I want to be able to view my list of songs in my playlist.
 - As a user, I want to be able to be able to play, pause, and skip a song
 - As a user, I want to be able to view the artist of the song

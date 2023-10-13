@@ -9,7 +9,7 @@ public class Song {
     private double rating;        // how much a user likes the song out of 10
 
 
-    // EFFECTS: constructs a song with a songName, artistName, format, and a songRating
+    // EFFECTS: constructs a song with a songName, artistName, format that starts with a ".", and a songRating
     public Song(String songName, String artistName, String format, double songRating) {
         this.name = songName;
         this.artist = artistName;
@@ -42,16 +42,3 @@ public class Song {
         return format;
     }
 }
-
-
-
-// full marks for code coverage can be achieved only if there is at least one
-// branch (i.e. if/else) or loop in the code included in the model package.
-
-//    As a user, I want to be able to add songs to my playlist.
-//        As a user, I want to be able to view my list of songs in my playlist.
-//        As a user, I want to be able to be able to play, pause, and skip a song
-//        As a user, I want to be able to view the artist of the song
-//        As a user, I want to be able to shuffle between the songs
-//        As a user, I want to be able to repeat songs
-//        As a user, I want to be able to mark certain songs as favourite's
