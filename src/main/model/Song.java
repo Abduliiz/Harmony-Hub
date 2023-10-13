@@ -14,18 +14,14 @@ public class Song {
         this.name = songName;
         this.artist = artistName;
         this.rating = songRating;
+        this.format = format.toUpperCase();
 
         if (!format.startsWith(".")) {
             StringBuffer sb = new StringBuffer();
             sb.append(".");
             sb.append(format);
-            this.format = sb.toString();
-
-        } else {
-            this.format = format;
+            this.format = sb.toString().toUpperCase();
         }
-
-        this.format = this.format.toUpperCase();
     }
 
 
