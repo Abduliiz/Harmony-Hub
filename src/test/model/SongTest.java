@@ -14,7 +14,7 @@ class SongTest {
     void runBefore() {
         testSong1 = new Song("run it up", "Tjay", "MP3", 1);
         testSong2 = new Song("idk", "some", "WAV", 4);
-        testSong3 = new Song("huh", "one", "MP3", 10);
+        testSong3 = new Song("huh", "one", ".MP3", 10);
     }
 
 
@@ -42,7 +42,9 @@ class SongTest {
 
     @Test
     void getFormat() {
-        assertEquals("MP3",testSong1.getFormat());
-        assertEquals("WAV",testSong2.getFormat());
+        assertEquals(".MP3",testSong1.getFormat());
+        assertEquals(".WAV",testSong2.getFormat());
+        assertEquals(".MP3",testSong3.getFormat());
+
     }
 }
