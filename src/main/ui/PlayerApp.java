@@ -3,19 +3,24 @@ package ui;
 import model.PlayList;
 import model.Song;
 
+import java.util.List;
 import java.util.Scanner;
 
+// MP3 player application
 public class PlayerApp {
     private PlayList myList;
     private Song song;
     private Scanner input;
 
+    // runs the Player application
     public PlayerApp() {
         runPlayerApp();
     }
 
-
+    // MODIFIES: this
+    // EFFECTS: processes user inputs
     private void runPlayerApp() {
+
         boolean runningStatus = true;
         String command = null;
 
@@ -25,8 +30,6 @@ public class PlayerApp {
             mainMenu();
             command = input.next();
             command = command.toLowerCase();
-
-
 
             if (command.equals("q")) {
                 System.out.println("Thank you!");
@@ -38,7 +41,8 @@ public class PlayerApp {
 
 
     }
-
+    // MODIFIES: this
+    // EFFECTS: initializes the application
 
     private void init() {
         System.out.println("\nWelcome to YOUR MP3 Player APP");
@@ -61,12 +65,15 @@ public class PlayerApp {
             displaySongs();
         } else if (command.equals("r")) {
             doRemove();
+        } else if (command.equals("c")) {
+            doCreateList();
         } else {
             System.out.println("Selection not valid...");
         }
     }
 
-
+    // MODIFIES: this
+    // EFFECTS: adds a song to a playlist
     private Song doAdd() {
         System.out.println("Enter the name of the Song: ");
         String name = input.next();
@@ -78,10 +85,21 @@ public class PlayerApp {
         System.out.println("How much do you rate this song out of 10? ");
         Double rating = input.nextDouble();
 
-
         return new Song(name,artist,format,rating);
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates a new playlist (still need more implementation)
+    private PlayList doCreateList() {
+        System.out.println("Enter the name of the Playlist: ");
+        String name = input.next();
+        PlayList newList = new PlayList(name);
+        System.out.println("Your new list [" + newList.getName() + "] have been created!");
+        return newList;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: removes a song from a playlist
     private void doRemove() {
         System.out.println("Enter the name of the Song to remove: ");
         displaySongs();
@@ -98,26 +116,25 @@ public class PlayerApp {
         }
     }
 
-
+    // MODIFIES: this
+    // EFFECTS: displays the songs in a playlist
     public void displaySongs() {
         if (myList.getSongs().isEmpty()) {
             System.out.println("Your playlist is empty, try adding new songs!");
         } else {
             for (Song song : myList.getSongs()) {
-                System.out.println("[" + song.getName() + " by:" + song.getArtist()
-                        + " rating: " + song.getRating() + "]");
+                System.out.println("[" + song.getName() + " By:" + song.getArtist()
+                        + " Rating: " + song.getRating() + " Format:" + song.getFormat() + "]");
             }
         }
 
     }
 
-
-
-
-
+    // EFFECTS: displays the menu of options to user
     private void mainMenu() {
         System.out.println("\nSelect from:");
         System.out.println("\ta -> add song to playlist");
+        System.out.println("\tc -> create a new playlist");
         System.out.println("\tr -> remove song from playlist");
         System.out.println("\td -> display the songs in your playlist");
         System.out.println("\tq -> quit");
