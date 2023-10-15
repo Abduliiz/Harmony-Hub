@@ -48,6 +48,8 @@ I am really interested in this project because i use a music player daily in my 
 
 </span>
 
+- As a user, I want to be able to save my playlist to file (if I so choose)
+- As a user, I want to be able to be able to load my playlist from file (if I so choose)
 - As a user, I want to be able to add songs to my playlist. 
 - As a user, I want to be able to remove songs from my playlist.
 - As a user, I want to be able to view my list of songs in my playlist.
