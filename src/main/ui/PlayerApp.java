@@ -2,18 +2,24 @@ package ui;
 
 import model.PlayList;
 import model.Song;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
-import java.util.List;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 // MP3 player application
 public class PlayerApp {
+    private static final String JSON_STORE = "./data/playlist.json";
     private PlayList myList;
     private Song song;
     private Scanner input;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // runs the Player application
-    public PlayerApp() {
+    public PlayerApp() throws FileNotFoundException {
         runPlayerApp();
     }
 
@@ -22,8 +28,7 @@ public class PlayerApp {
     private void runPlayerApp() {
 
         boolean runningStatus = true;
-        String command = null;
-
+        String command;
         init();
 
         while (runningStatus) {
@@ -52,6 +57,8 @@ public class PlayerApp {
         input.useDelimiter("\n");
         String x = input.next();
         myList = new PlayList(x);
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
     }
 
     // MODIFIES: this
@@ -67,8 +74,36 @@ public class PlayerApp {
             doRemove();
         } else if (command.equals("c")) {
             doCreateList();
+        } else if (command.equals("s")) {
+            saveWorkRoom();
+        } else if (command.equals("l")) {
+            loadWorkRoom();
         } else {
             System.out.println("Selection not valid...");
+        }
+    }
+
+
+    // EFFECTS: saves the workroom to file
+    private void saveWorkRoom() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(myList);
+            jsonWriter.close();
+            System.out.println("Saved " + myList.getName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads workroom from file
+    private void loadWorkRoom() {
+        try {
+            myList = jsonReader.read();
+            System.out.println("Loaded " + myList.getName() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
 
@@ -81,10 +116,12 @@ public class PlayerApp {
         String artist = input.next();
         System.out.println("Enter the Format of the Song (i.e MP3, WAV): ");
         String format = input.next();
+        System.out.println("Enter the path of the song: ");
+        String path = input.next();
         System.out.println("How much do you rate this song out of 10? ");
-        Double rating = input.nextDouble();
+        double rating = input.nextDouble();
 
-        return new Song(name,artist,format,rating);
+        return new Song(name,artist,format,path,rating);
     }
 
     // MODIFIES: this
@@ -133,9 +170,11 @@ public class PlayerApp {
     private void mainMenu() {
         System.out.println("\nSelect from:");
         System.out.println("\ta -> add song to playlist");
-        System.out.println("\tc -> create a new playlist");
+        //System.out.println("\tc -> create a new playlist");
         System.out.println("\tr -> remove song from playlist");
         System.out.println("\td -> display the songs in your playlist");
+        System.out.println("\ts -> save work room to file");
+        System.out.println("\tl -> load work room from file");
         System.out.println("\tq -> quit");
     }
 

@@ -12,9 +12,9 @@ class SongTest {
 
     @BeforeEach
     void runBefore() {
-        testSong1 = new Song("run it up", "Tjay", "MP3", 1);
-        testSong2 = new Song("idk", "some", "WAV", 4);
-        testSong3 = new Song("huh", "one", ".MP3", 10);
+        testSong1 = new Song("run it up", "Tjay", "MP3", "",1);
+        testSong2 = new Song("idk", "some", "WAV", "" ,4);
+        testSong3 = new Song("huh", "one", ".MP3", "",10);
     }
 
 

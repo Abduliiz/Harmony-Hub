@@ -2,9 +2,6 @@ package model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayListTest {
@@ -18,9 +15,9 @@ class PlayListTest {
     @BeforeEach
     void runBefore() {
         testPlaylist = new PlayList("NewList");
-        testSong1 = new Song("run it up", "Tjay", "MP3", 1);
-        testSong2 = new Song("idk", "some", "WAV", 4);
-        testSong3 = new Song("huh", "one", "MP3", 10);
+        testSong1 = new Song("run it up", "Tjay", "MP3", "song/test" ,1);
+        testSong2 = new Song("idk", "some", "WAV", "song/test", 4);
+        testSong3 = new Song("huh", "one", "MP3", "song/test", 10);
 
 
     }
