@@ -43,8 +43,8 @@ class JsonReaderTest extends JsonTest {
             assertEquals("My playlist", pl.getName());
             List<Song> songs = pl.getSongs();
             assertEquals(2, songs.size());
-            checkThingy("lovely", pl.getSongs().get(0));
-            checkThingy("inneed", pl.getSongs().get(1));
+            checkSong("lovely", pl.getSongs().get(0));
+            checkSong("inneed", pl.getSongs().get(1));
         } catch (IOException e) {
             fail("Couldn't read from file");
         }

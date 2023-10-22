@@ -13,7 +13,7 @@ public class PlayList implements Writable {
     private List<Song> songs;
     private String name;
 
-
+    // EFFECTS: constructs a playlist with a name and an arraylist of songs
     public PlayList(String name) {
         this.songs = new ArrayList<>();
         this.name = name;
@@ -32,12 +32,14 @@ public class PlayList implements Writable {
         return songs.size();
     }
 
-    // adds a song to a playlist
+    // MODIFIES: this
+    // EFFECTS: adds a song to a playlist
     public List<Song> addSong(Song song) {
         this.songs.add(song);
         return this.songs;
     }
 
+    // EFFECTS: Turns playlist into a json file
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -46,7 +48,7 @@ public class PlayList implements Writable {
         return json;
     }
 
-    // EFFECTS: returns things in this workroom as a JSON array
+    // EFFECTS: returns songs in this playlist as a JSON array
     private JSONArray songsToJson() {
         JSONArray jsonArray = new JSONArray();
 

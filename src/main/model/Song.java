@@ -29,6 +29,7 @@ public class Song implements Writable {
         }
     }
 
+    // Effects: Turns song into a Json file
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

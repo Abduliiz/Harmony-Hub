@@ -9,9 +9,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class JsonWriterTest extends JsonTest {
-    //NOTE TO CPSC 210 STUDENTS: the strategy in designing tests for the JsonWriter is to
-    //write data to a file and then use the reader to read it back in and check that we
-    //read in a copy of what was written out.
 
     @Test
     void testWriterInvalidFile() {
@@ -59,8 +56,8 @@ class JsonWriterTest extends JsonTest {
             assertEquals("My playlist", pl.getName());
             List<Song> songs = pl.getSongs();
             assertEquals(2, songs.size());
-            checkThingy("lovely", songs.get(0));
-            checkThingy("inneed", songs.get(1));
+            checkSong("lovely", songs.get(0));
+            checkSong("inneed", songs.get(1));
 
         } catch (IOException e) {
             fail("Exception should not have been thrown");

@@ -75,17 +75,17 @@ public class PlayerApp {
         } else if (command.equals("c")) {
             doCreateList();
         } else if (command.equals("s")) {
-            saveWorkRoom();
+            savePlayList();
         } else if (command.equals("l")) {
-            loadWorkRoom();
+            loadPlayList();
         } else {
             System.out.println("Selection not valid...");
         }
     }
 
 
-    // EFFECTS: saves the workroom to file
-    private void saveWorkRoom() {
+    // EFFECTS: saves the Playlist to file
+    private void savePlayList() {
         try {
             jsonWriter.open();
             jsonWriter.write(myList);
@@ -97,8 +97,8 @@ public class PlayerApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads workroom from file
-    private void loadWorkRoom() {
+    // EFFECTS: loads Playlist from file
+    private void loadPlayList() {
         try {
             myList = jsonReader.read();
             System.out.println("Loaded " + myList.getName() + " from " + JSON_STORE);
