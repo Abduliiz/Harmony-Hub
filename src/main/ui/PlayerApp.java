@@ -1,13 +1,17 @@
 package ui;
 
+import model.AudioPlayer;
 import model.PlayList;
 import model.Song;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
+
 
 // MP3 player application
 public class PlayerApp {
@@ -17,19 +21,21 @@ public class PlayerApp {
     private Scanner input;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
+    private AudioPlayer audioPlayer;
 
     // runs the Player application
-    public PlayerApp() throws FileNotFoundException {
+    public PlayerApp() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         runPlayerApp();
     }
 
     // MODIFIES: this
     // EFFECTS: processes user inputs
-    private void runPlayerApp() {
+    private void runPlayerApp() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
 
         boolean runningStatus = true;
         String command;
         init();
+
 
         while (runningStatus) {
             mainMenu();
@@ -63,25 +69,42 @@ public class PlayerApp {
 
     // MODIFIES: this
     // EFFECTS: processes user commands
-    private void processCommands(String command) {
-        if (command.equals("a")) {
+
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
+    private void processCommands(String command) throws UnsupportedAudioFileException,
+            LineUnavailableException, IOException {
+        if (command.equals("add")) {
             Song newSong = doAdd();
             myList.addSong(newSong);
             System.out.println(newSong.getName() + "Has been added to " + myList.getName());
-        } else if (command.equals("d")) {
+        } else if (command.equals("display")) {
             displaySongs();
-        } else if (command.equals("r")) {
+        } else if (command.equals("remove")) {
             doRemove();
-        } else if (command.equals("c")) {
-            doCreateList();
-        } else if (command.equals("s")) {
+//        } else if (command.equals("create")) {
+//            doCreateList();
+        } else if (command.equals("save")) {
             savePlayList();
-        } else if (command.equals("l")) {
+        } else if (command.equals("load")) {
             loadPlayList();
+        } else if (command.equals("play")) {
+            doPlay();
+        } else if (command.equals("main")) {
+            mainMenu();
+//        } else if (command.equals("3")) {
+//            audioPlayer.resumeAudio();
+//        } else if (command.equals("4")) {
+//            audioPlayer.resetAudioStream();
+//        } else if (command.equals("5")) {
+//            audioPlayer.stop();
+//        } else if (command.equals("6")) {
+//            audioPlayer.jump();
         } else {
             System.out.println("Selection not valid...");
         }
     }
+
+
 
 
     // EFFECTS: saves the Playlist to file
@@ -124,15 +147,55 @@ public class PlayerApp {
         return new Song(name,artist,format,path,rating);
     }
 
-    // MODIFIES: this
-    // EFFECTS: creates a new playlist (still need more implementation)
-    private PlayList doCreateList() {
-        System.out.println("Enter the name of the Playlist: ");
-        String name = input.next();
-        PlayList newList = new PlayList(name);
-        System.out.println("Your new list [" + newList.getName() + "] have been created!");
-        return newList;
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
+    private void doPlay() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        String songPath;
+        if (myList.getSongs().isEmpty()) {
+            System.out.println("your playlist is empty!");
+        } else {
+            System.out.println("What song would you like to play?");
+            displaySongs();
+            String songName = input.next();
+
+            for (int i = 0; i < myList.getSongs().size(); i++) {
+                if (songName.equals(myList.getSongs().get(i).getName())) {
+                    songPath = myList.getSongs().get(i).getPath();
+                    System.out.println(songPath + " is now playing!");
+
+                    try {
+                        audioPlayer = new AudioPlayer(songPath);
+                        Scanner sc = new Scanner(System.in);
+                        audioPlayer.play(songPath);
+                        while (true) {
+                            int c = sc.nextInt();
+                            audioPlayer.gotoChoice(c);
+                            if (c == 4) {
+                                break;
+                            }
+                        }
+                    } catch (Exception ex) {
+                        System.out.println("Error with playing sound.");
+                        ex.printStackTrace();
+                    }
+
+                } else {
+                    System.out.println("I couldn't find a song with this name:" + songName);
+                }
+                break;
+            }
+        }
+
     }
+
+//    // MODIFIES: this
+//    // EFFECTS: creates a new playlist (still need more implementation)
+//    private PlayList doCreateList() {
+//        System.out.println("Enter the name of the Playlist: ");
+//        String name = input.next();
+//        PlayList newList = new PlayList(name);
+//        System.out.println("Your new list [" + newList.getName() + "] have been created!");
+//        return newList;
+//    }
 
     // MODIFIES: this
     // EFFECTS: removes a song from a playlist
@@ -169,12 +232,12 @@ public class PlayerApp {
     // EFFECTS: displays the menu of options to user
     private void mainMenu() {
         System.out.println("\nSelect from:");
-        System.out.println("\ta -> add song to playlist");
-        //System.out.println("\tc -> create a new playlist");
-        System.out.println("\tr -> remove song from playlist");
-        System.out.println("\td -> display the songs in your playlist");
-        System.out.println("\ts -> save work room to file");
-        System.out.println("\tl -> load work room from file");
+        System.out.println("\tadd -> add song to playlist");
+        System.out.println("\tplay -> play a song");
+        System.out.println("\tremove -> remove song from playlist");
+        System.out.println("\tdisplay -> display the songs in your playlist");
+        System.out.println("\tsave -> save work room to file");
+        System.out.println("\tload -> load work room from file");
         System.out.println("\tq -> quit");
     }
 
