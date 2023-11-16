@@ -66,6 +66,7 @@ public class PlayerApp extends JFrame {
         init();
     }
 
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     private void init() {
         myList = new PlayList("My PlayList");
         jsonWriter = new JsonWriter(JSON_STORE);
@@ -279,7 +280,7 @@ public class PlayerApp extends JFrame {
             this.rating.setText("");
             tableModel.setRowCount(0); // Clear existing content
             for (Song song : myList.getSongs()) {
-                tableModel.addRow(new Object[]{song.getName(), song.getArtist(), song.getRating(), song.getPath()}); // Add other attributes as needed
+                tableModel.addRow(new Object[]{song.getName(), song.getArtist(), song.getRating(), song.getPath()});
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(frame, "Invalid rating. Please enter a valid number.");
@@ -294,7 +295,7 @@ public class PlayerApp extends JFrame {
             JOptionPane.showMessageDialog(frame,"Loaded " + myList.getName() + " from " + JSON_STORE);
             tableModel.setRowCount(0); // Clear existing content
             for (Song song : myList.getSongs()) {
-                tableModel.addRow(new Object[]{song.getName(), song.getArtist(), song.getRating(), song.getPath()}); // Add other attributes as needed
+                tableModel.addRow(new Object[]{song.getName(), song.getArtist(), song.getRating(), song.getPath()});
             }
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
@@ -336,18 +337,6 @@ public class PlayerApp extends JFrame {
             }
         });
 
-    }
-
-    // EFFECTS: displays the menu of options to user
-    private void mainMenu() {
-        System.out.println("\nSelect from:");
-        System.out.println("\tadd -> add song to playlist");
-        System.out.println("\tplay -> play a song");
-        System.out.println("\tremove -> remove song from playlist");
-        System.out.println("\tdisplay -> display the songs in your playlist");
-        System.out.println("\tsave -> save songs to file");
-        System.out.println("\tload -> load songs from file");
-        System.out.println("\tq -> quit");
     }
 
 }
