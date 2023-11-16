@@ -44,8 +44,8 @@ class JsonWriterTest extends JsonTest {
     void testWriterGeneralWorkroom() {
         try {
             PlayList pl = new PlayList("My playlist");
-            pl.addSong(new Song("lovely", "Samer", "MP3", "test/s",10));
-            pl.addSong(new Song("inneed", "Abdul", "MP3", "tets/song",6));
+            pl.addSong(new Song("lovely", "Samer", "MP3", "test/s",10.0));
+            pl.addSong(new Song("inneed", "Abdul", "MP3", "tets/song",6.0));
             JsonWriter writer = new JsonWriter("./data/testReaderGeneralPlayList.json");
             writer.open();
             writer.write(pl);

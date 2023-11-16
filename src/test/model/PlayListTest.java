@@ -15,9 +15,9 @@ class PlayListTest {
     @BeforeEach
     void runBefore() {
         testPlaylist = new PlayList("NewList");
-        testSong1 = new Song("run it up", "Tjay", "MP3", "song/test" ,1);
-        testSong2 = new Song("idk", "some", "WAV", "song/test", 4);
-        testSong3 = new Song("huh", "one", "MP3", "song/test", 10);
+        testSong1 = new Song("run it up", "Tjay", "MP3", "song/test" ,1.0);
+        testSong2 = new Song("idk", "some", "WAV", "song/test", 4.0);
+        testSong3 = new Song("huh", "one", "MP3", "song/test", 10.0);
 
 
     }

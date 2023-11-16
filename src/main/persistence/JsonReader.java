@@ -64,7 +64,7 @@ public class JsonReader {
         String path = jsonObject.getString("path");
         String artist = jsonObject.getString("artist");
         String format = jsonObject.getString("format");
-        int rating = jsonObject.getInt("rating");
+        double rating = jsonObject.getInt("rating");
         Song song = new Song(name, artist, format, path, rating);
         pl.addSong(song);
     }

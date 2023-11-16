@@ -9,11 +9,11 @@ public class Song implements Writable {
     private final String artist;     // the name of the artist
     private String format;     // the song file format
     private final String path;       // path for the file
-    private final double rating;        // how much a user likes the song out of 10
+    private final Double rating;        // how much a user likes the song out of 10
 
 
     // EFFECTS: constructs a song with a songName, artistName, format that starts with a ".", and a songRating
-    public Song(String songName, String artistName, String format, String path, double songRating) {
+    public Song(String songName, String artistName, String format, String path, Double songRating) {
         this.name = songName;
         this.artist = artistName;
         this.rating = songRating;
