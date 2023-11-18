@@ -51,6 +51,10 @@ public class PlayerApp extends JFrame {
     private JsonReader jsonReader;
     private AudioPlayer audioPlayer;
 
+    private static final Dimension fixedSize = new Dimension(400, 20);
+    private static final Dimension max = new Dimension(500, 30);
+    private static final Dimension min = new Dimension(300, 10);
+
     // runs the Player application
     public PlayerApp() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         runPlayerApp();
@@ -58,15 +62,15 @@ public class PlayerApp extends JFrame {
 
     // MODIFIES: this
     // EFFECTS: processes user inputs
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     private void runPlayerApp() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
 
         boolean runningStatus = true;
         String command;
         init();
+
+
     }
 
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     private void init() {
         myList = new PlayList("My PlayList");
         jsonWriter = new JsonWriter(JSON_STORE);
@@ -79,14 +83,16 @@ public class PlayerApp extends JFrame {
         frame.setVisible(true);
         ImageIcon icon = new ImageIcon("music logo design.png");
         frame.setIconImage(icon.getImage());
-        // Columns for the table
-        String[] columns = new String[]{"Title", "Artist", "Rating", "path"}; // Add more columns as needed
+        initPanel();
+        initTextFields();
+        init4();
+        addListeners();
+        addListeners2();
 
-        // Create Table Model
-        tableModel = new DefaultTableModel(columns, 0);
-        songTable = new JTable(tableModel); // Initialize with your model
-        frame.add(new JScrollPane(songTable), BorderLayout.EAST);
+    }
 
+
+    private void initPanel() {
         // Control panel
         JPanel controlPanel = new JPanel();
         statusLabel = new JLabel("Welcome to Harmony Hub!");
@@ -107,34 +113,114 @@ public class PlayerApp extends JFrame {
         controlPanel.add(resumeButton);
         frame.add(controlPanel, BorderLayout.NORTH);
 
-        // Status label
 
 
-        Dimension fixedSize = new Dimension(400, 20); // Example size
-        Dimension max = new Dimension(500, 30); // Example size
-        Dimension min = new Dimension(300, 10); // Example size
+    }
 
+    private void addListeners2() {
+
+
+        songTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int row = songTable.rowAtPoint(e.getPoint());
+
+                if (row >= 0) {
+                    String songPath = (String) songTable.getValueAt(row, 3);
+
+                    try {
+                        doPlay(songPath);
+                    } catch (UnsupportedAudioFileException ex) {
+                        JOptionPane.showMessageDialog(frame, "Unsupported Audio file format!");
+                    } catch (LineUnavailableException ex) {
+                        JOptionPane.showMessageDialog(frame, "Error!");
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(frame, "Something went Wrong!");
+                    }
+                }
+            }
+        });
+
+        saveButton.addActionListener(e -> savePlayList());
+
+        pauseButton.addActionListener(e -> audioPlayer.pause());
+
+        addSongButton.addActionListener(e -> processInputData());
+
+        removeSongButton.addActionListener(e -> doRemove());
+    }
+
+    private void addListeners() {
+
+        browseButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            int result = fileChooser.showOpenDialog(frame);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                path.setText(selectedFile.getAbsolutePath());
+            }
+        });
+
+        loadButton.addActionListener(e -> loadPlayList());
+
+        resumeButton.addActionListener(e -> {
+            try {
+                audioPlayer.resumeAudio();
+            } catch (UnsupportedAudioFileException ex) {
+                throw new RuntimeException(ex);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (LineUnavailableException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+
+
+
+
+
+    }
+
+    private void initTextFields() {
+        String[] columns = new String[]{"Title", "Artist", "Rating", "path"};
+        tableModel = new DefaultTableModel(columns, 0);
+        songTable = new JTable(tableModel);
+        frame.add(new JScrollPane(songTable), BorderLayout.EAST);
+        name = createTextField();
+        artist = createTextField();
+        path = createTextField();
+        rating = createTextField();
+        browseButton = new JButton("Browse");
+
+        stopButton.addActionListener(e -> {
+            try {
+                audioPlayer.stop();
+                status = false;
+            } catch (UnsupportedAudioFileException ex) {
+                throw new RuntimeException(ex);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (LineUnavailableException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+    }
+
+    private JTextField createTextField() {
+        JTextField textField = new JTextField();
+        textField.setPreferredSize(fixedSize);
+        textField.setMaximumSize(max);
+        return textField;
+    }
+
+    private void init4() {
 
         JLabel nameLabel = new JLabel("Name");
-        name = new JTextField();
-        name.setPreferredSize(fixedSize);
-        name.setMaximumSize(max);
         JLabel artistLabel = new JLabel("Artist:");
-        artist = new JTextField();
-        artist.setPreferredSize(fixedSize);
-        artist.setMaximumSize(max);
-
         JLabel pathLabel = new JLabel("Path");
-        path = new JTextField();
-        path.setPreferredSize(fixedSize);
-        path.setMaximumSize(max);
-
         JLabel ratingLabel = new JLabel("Rating (int)");
-        rating = new JTextField();
-        rating.setPreferredSize(fixedSize);
-        rating.setMaximumSize(max);
-
-        browseButton = new JButton("Browse");
 
         JPanel songPanel = new JPanel();
         songPanel.setLayout(new BoxLayout(songPanel, BoxLayout.Y_AXIS));
@@ -151,101 +237,6 @@ public class PlayerApp extends JFrame {
         frame.add(songPanel, BorderLayout.WEST);
 
         frame.pack();
-
-        browseButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-                int result = fileChooser.showOpenDialog(frame);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    path.setText(selectedFile.getAbsolutePath());
-                }
-            }
-        });
-
-        loadButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                loadPlayList();
-            }
-        });
-
-        resumeButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    audioPlayer.resumeAudio();
-                } catch (UnsupportedAudioFileException ex) {
-                    throw new RuntimeException(ex);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                } catch (LineUnavailableException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
-
-        saveButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                savePlayList();
-            }
-        });
-
-        pauseButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                audioPlayer.pause();
-            }
-        });
-
-        stopButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    audioPlayer.stop();
-                    status = false;
-                } catch (UnsupportedAudioFileException ex) {
-                    throw new RuntimeException(ex);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                } catch (LineUnavailableException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
-
-        addSongButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Call a method to process the text field data
-                processInputData();
-            }
-        });
-
-        removeSongButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                doRemove();
-            }
-        });
-
-        songTable.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                int row = songTable.rowAtPoint(e.getPoint());
-
-                if (row >= 0) {
-                    // Assuming the path is in a specific column, for example column index 3
-                    String songPath = (String) songTable.getValueAt(row, 3);
-
-                    try {
-                        doPlay(songPath);
-                    } catch (UnsupportedAudioFileException ex) {
-                        JOptionPane.showMessageDialog(frame, "Unsupported Audio file format!");
-                    } catch (LineUnavailableException ex) {
-                        JOptionPane.showMessageDialog(frame, "Error!");
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(frame, "Something went Wrong!");
-                    }
-                }
-            }
-        });
-
-
     }
 
     // EFFECTS: saves the Playlist to file
