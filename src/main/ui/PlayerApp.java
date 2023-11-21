@@ -183,7 +183,7 @@ public class PlayerApp {
         // Create and populate the combo box
 
 
-        Object[] columns = new Object[]{ "Options", "Title", "Artist", "Rating", "path"};
+        Object[] columns = new Object[]{"Title", "Artist", "Rating", "path"};
         tableModel = new DefaultTableModel(columns, 0);
         songTable = new JTable(tableModel);
         frame.add(new JScrollPane(songTable), BorderLayout.EAST);
@@ -261,14 +261,6 @@ public class PlayerApp {
         String name = this.name.getText();
         String path = this.path.getText();
         String artist = this.artist.getText();
-        String[] items = {"Option 1", "Option 2", "Option 3"};
-        JComboBox<String> dropdown = new JComboBox<>(items);
-
-        // Add action listener
-        dropdown.addActionListener(e -> {
-            String selected = (String) dropdown.getSelectedItem();
-            System.out.println("Selected: " + selected);
-        });
 
         try {
             double rating = Double.parseDouble(this.rating.getText());
@@ -285,7 +277,7 @@ public class PlayerApp {
             this.rating.setText("");
             tableModel.setRowCount(0); // Clear existing content
             for (Song song : myList.getSongs()) {
-                tableModel.addRow(new Object[]{dropdown, song.getName(), song.getArtist(), song.getRating(), song.getPath()});
+                tableModel.addRow(new Object[]{song.getName(), song.getArtist(), song.getRating(), song.getPath()});
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(frame, "Invalid rating. Please enter a valid number.");
