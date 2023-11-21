@@ -1,4 +1,4 @@
-package model;
+package ui;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,50 +27,14 @@ public class AudioPlayer {
 
         // create clip reference
         clip = AudioSystem.getClip();
-
         // open audioInputStream to the clip
         clip.open(audioInputStream);
-
         clip.loop(Clip.LOOP_CONTINUOUSLY);
-    }
-
-
-
-
-    // Work as the user enters his choice
-
-    public void gotoChoice(int c)
-            throws IOException, LineUnavailableException, UnsupportedAudioFileException {
-        switch (c) {
-            case 1:
-                pause();
-                break;
-            case 2:
-                resumeAudio();
-                break;
-            case 3:
-                restart();
-                break;
-            case 4:
-                stop();
-                break;
-            case 5:
-                jump();
-                break;
-
-        }
-
     }
 
     // Method to play the audio
     public void play(String path) {
         this.filePath = path;
-        System.out.println("1. pause");
-        System.out.println("2. resume");
-        System.out.println("3. restart");
-        System.out.println("4. stop");
-        System.out.println("5. Jump to specific time");
-
         clip.start();
         status = "play";
     }

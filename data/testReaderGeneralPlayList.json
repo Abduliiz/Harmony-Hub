@@ -1,0 +1,19 @@
+{
+    "songs": [
+        {
+            "path": "test/s",
+            "artist": "Samer",
+            "name": "lovely",
+            "format": ".MP3",
+            "rating": 10
+        },
+        {
+            "path": "tets/song",
+            "artist": "Abdul",
+            "name": "inneed",
+            "format": ".MP3",
+            "rating": 6
+        }
+    ],
+    "name": "My playlist"
+}

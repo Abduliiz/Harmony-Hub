@@ -1,6 +1,5 @@
 package ui;
 
-import model.AudioPlayer;
 import model.PlayList;
 import model.Song;
 import persistence.JsonReader;
@@ -15,14 +14,14 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
 
 
 // MP3 player application
-public class PlayerApp extends JFrame {
+public class PlayerApp {
     private JFrame frame;
     private JButton addSongButton;
     private JButton removeSongButton;
+    private ImageIcon icon;
 //    private JButton submitButton;
 
     private JTextField name;
@@ -45,8 +44,6 @@ public class PlayerApp extends JFrame {
 
     private static final String JSON_STORE = "./data/playlist.json";
     private PlayList myList;
-    private Song song;
-    private Scanner input;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private AudioPlayer audioPlayer;
@@ -63,14 +60,11 @@ public class PlayerApp extends JFrame {
     // MODIFIES: this
     // EFFECTS: processes user inputs
     private void runPlayerApp() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-
-        boolean runningStatus = true;
-        String command;
         init();
-
-
     }
 
+    // MODIFIES: this
+    // EFFECTS: Initializes the project
     private void init() {
         myList = new PlayList("My PlayList");
         jsonWriter = new JsonWriter(JSON_STORE);
@@ -81,7 +75,7 @@ public class PlayerApp extends JFrame {
         frame.setSize(820, 700);
         frame.setLayout(new BorderLayout());
         frame.setVisible(true);
-        ImageIcon icon = new ImageIcon("music logo design.png");
+        icon = new ImageIcon("data/music logo design.png");
         frame.setIconImage(icon.getImage());
         initPanel();
         initTextFields();
@@ -91,11 +85,11 @@ public class PlayerApp extends JFrame {
 
     }
 
-
+    // MODIFIES: this
+    // EFFECTS: Initializes control panel
     private void initPanel() {
         // Control panel
         JPanel controlPanel = new JPanel();
-        statusLabel = new JLabel("Welcome to Harmony Hub!");
         addSongButton = new JButton("Add");
         removeSongButton = new JButton("Remove");
         pauseButton = new JButton("Pause");
@@ -103,7 +97,7 @@ public class PlayerApp extends JFrame {
         loadButton = new JButton("Load");
         stopButton = new JButton("Stop");
         resumeButton = new JButton("Resume");
-        controlPanel.add(statusLabel);
+        JLabel label = new JLabel(icon);
         controlPanel.add(addSongButton);
         controlPanel.add(removeSongButton);
         controlPanel.add(pauseButton);
@@ -111,15 +105,19 @@ public class PlayerApp extends JFrame {
         controlPanel.add(loadButton);
         controlPanel.add(stopButton);
         controlPanel.add(resumeButton);
+        controlPanel.add(label);
+        controlPanel.setBackground(new java.awt.Color(131, 162, 255));
+        frame.setBackground(new java.awt.Color(181, 162, 255));
         frame.add(controlPanel, BorderLayout.NORTH);
 
 
 
     }
 
+
+    // MODIFIES: this
+    // EFFECTS: adds action listeners for buttons
     private void addListeners2() {
-
-
         songTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 int row = songTable.rowAtPoint(e.getPoint());
@@ -149,6 +147,8 @@ public class PlayerApp extends JFrame {
         removeSongButton.addActionListener(e -> doRemove());
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds action listeners for buttons
     private void addListeners() {
 
         browseButton.addActionListener(e -> {
@@ -175,15 +175,15 @@ public class PlayerApp extends JFrame {
             }
         });
 
-
-
-
-
-
     }
 
+    // MODIFIES: this
+    // EFFECTS: Initializes text fields
     private void initTextFields() {
-        String[] columns = new String[]{"Title", "Artist", "Rating", "path"};
+        // Create and populate the combo box
+
+
+        Object[] columns = new Object[]{ "Options", "Title", "Artist", "Rating", "path"};
         tableModel = new DefaultTableModel(columns, 0);
         songTable = new JTable(tableModel);
         frame.add(new JScrollPane(songTable), BorderLayout.EAST);
@@ -208,6 +208,8 @@ public class PlayerApp extends JFrame {
 
     }
 
+    // MODIFIES: this
+    // EFFECTS: text field creator;
     private JTextField createTextField() {
         JTextField textField = new JTextField();
         textField.setPreferredSize(fixedSize);
@@ -215,6 +217,8 @@ public class PlayerApp extends JFrame {
         return textField;
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes text fields panel (left panel)
     private void init4() {
 
         JLabel nameLabel = new JLabel("Name");
@@ -251,10 +255,20 @@ public class PlayerApp extends JFrame {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: processes input from user to the text fields
     private void processInputData() {
         String name = this.name.getText();
         String path = this.path.getText();
         String artist = this.artist.getText();
+        String[] items = {"Option 1", "Option 2", "Option 3"};
+        JComboBox<String> dropdown = new JComboBox<>(items);
+
+        // Add action listener
+        dropdown.addActionListener(e -> {
+            String selected = (String) dropdown.getSelectedItem();
+            System.out.println("Selected: " + selected);
+        });
 
         try {
             double rating = Double.parseDouble(this.rating.getText());
@@ -271,7 +285,7 @@ public class PlayerApp extends JFrame {
             this.rating.setText("");
             tableModel.setRowCount(0); // Clear existing content
             for (Song song : myList.getSongs()) {
-                tableModel.addRow(new Object[]{song.getName(), song.getArtist(), song.getRating(), song.getPath()});
+                tableModel.addRow(new Object[]{dropdown, song.getName(), song.getArtist(), song.getRating(), song.getPath()});
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(frame, "Invalid rating. Please enter a valid number.");
@@ -293,16 +307,23 @@ public class PlayerApp extends JFrame {
         }
     }
 
+
+    // MODIFIES: this
+    // EFFECTS: plays the audio files
     private void doPlay(String path) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         if (myList.getSongs().isEmpty()) {
             JOptionPane.showMessageDialog(frame, "your playlist is empty!");
         } else if (status == true) {
-            JOptionPane.showMessageDialog(frame, "Song already plaing!");
+            JOptionPane.showMessageDialog(frame, "Song already playing!");
         } else {
             audioPlayer = new AudioPlayer(path);
             audioPlayer.play(path);
             status = true;
         }
+    }
+
+    public JFrame getFrame() {
+        return this.frame;
     }
 
     // MODIFIES: this
@@ -327,6 +348,8 @@ public class PlayerApp extends JFrame {
                 }
             }
         });
+
+
 
     }
 
