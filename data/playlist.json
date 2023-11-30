@@ -1,33 +1,10 @@
 {
-    "songs": [
-        {
-            "path": "/Users/tdscholar/Desktop/Samer - World Goes Blind.wav",
-            "artist": "Samer",
-            "name": "World Goes Blind",
-            "format": ".WAV",
-            "rating": 10
-        },
-        {
-            "path": "/Users/tdscholar/Desktop/017.wav",
-            "artist": "na",
-            "name": "Quran",
-            "format": ".WAV",
-            "rating": 10
-        },
-        {
-            "path": "/Users/tdscholar/Desktop/champion-80bpm-132686.wav",
-            "artist": "NA",
-            "name": "test theme",
-            "format": ".WAV",
-            "rating": 2
-        },
-        {
-            "path": "/Users/tdscholar/Desktop/Saad Lamjarred - LM3ALLEM (Exclusive Music Video) _  (سعد لمجرد - لمعلم (فيديو كليب حصري.wav",
-            "artist": "سعد الممجرد",
-            "name": "انت معلم",
-            "format": ".WAV",
-            "rating": 3
-        }
-    ],
+    "songs": [{
+        "path": "/Users/tdscholar/Desktop/Gesaffelstein & The Weeknd - Lost in the Fire (Official Video).wav",
+        "artist": "The Weekend",
+        "name": "Gesaffelstein",
+        "format": ".WAV",
+        "rating": 10
+    }],
     "name": "My PlayList"
 }

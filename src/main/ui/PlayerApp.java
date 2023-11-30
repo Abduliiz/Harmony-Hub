@@ -1,5 +1,7 @@
 package ui;
 
+import model.Event;
+import model.EventLog;
 import model.PlayList;
 import model.Song;
 import persistence.JsonReader;
@@ -11,8 +13,10 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 
 
@@ -22,7 +26,7 @@ public class PlayerApp {
     private JButton addSongButton;
     private JButton removeSongButton;
     private ImageIcon icon;
-//    private JButton submitButton;
+    private FileWriter fw;
 
     private JTextField name;
     private JTextField artist;
@@ -77,6 +81,7 @@ public class PlayerApp {
         frame.setVisible(true);
         icon = new ImageIcon("data/music logo design.png");
         frame.setIconImage(icon.getImage());
+        initialWindow();
         initPanel();
         initTextFields();
         init4();
@@ -85,9 +90,43 @@ public class PlayerApp {
 
     }
 
+    /**
+     * Represents the action to be taken when the user wants to
+     * clear the event log.
+     */
+    private class ClearLogAction extends AbstractAction {
+        public void actionPerformed(ActionEvent evt) {
+            EventLog.getInstance().clear();
+        }
+    }
+
+    /**
+     * Represents action to be taken when user clicks desktop
+     * to switch focus. (Needed for key handling.)
+     */
+
+
+    private void initialWindow() {
+        this.frame.addWindowListener(new WindowAdapter() {
+
+            public void windowClosing(WindowEvent e) {
+                try {
+                    EventLog.getInstance().foreach();
+                } catch (IOException ex) {
+                    System.out.println("Couldnt print log");
+                }
+                frame.dispose();
+            }
+
+        });
+    }
+
     // MODIFIES: this
     // EFFECTS: Initializes control panel
     private void initPanel() {
+//        BufferedImage playButtonIcon = new BufferedImage(12, 20, "data/play.png");
+//        ImageIcon saveButtonIcon = new ImageIcon("data/save.png");
+//        ImageIcon pauseButtonIcon = new ImageIcon("data/pause.png");
         // Control panel
         JPanel controlPanel = new JPanel();
         addSongButton = new JButton("Add");
@@ -109,7 +148,6 @@ public class PlayerApp {
         controlPanel.setBackground(new java.awt.Color(131, 162, 255));
         frame.setBackground(new java.awt.Color(181, 162, 255));
         frame.add(controlPanel, BorderLayout.NORTH);
-
 
 
     }
@@ -220,7 +258,6 @@ public class PlayerApp {
     // MODIFIES: this
     // EFFECTS: initializes text fields panel (left panel)
     private void init4() {
-
         JLabel nameLabel = new JLabel("Name");
         JLabel artistLabel = new JLabel("Artist:");
         JLabel pathLabel = new JLabel("Path");
@@ -249,7 +286,7 @@ public class PlayerApp {
             jsonWriter.open();
             jsonWriter.write(myList);
             jsonWriter.close();
-            JOptionPane.showMessageDialog(frame,"Saved " + myList.getName() + " to " + JSON_STORE);
+            JOptionPane.showMessageDialog(frame, "Saved " + myList.getName() + " to " + JSON_STORE);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
         }
@@ -289,7 +326,7 @@ public class PlayerApp {
     private void loadPlayList() {
         try {
             myList = jsonReader.read();
-            JOptionPane.showMessageDialog(frame,"Loaded " + myList.getName() + " from " + JSON_STORE);
+            JOptionPane.showMessageDialog(frame, "Loaded " + myList.getName() + " from " + JSON_STORE);
             tableModel.setRowCount(0); // Clear existing content
             for (Song song : myList.getSongs()) {
                 tableModel.addRow(new Object[]{song.getName(), song.getArtist(), song.getRating(), song.getPath()});
@@ -314,6 +351,7 @@ public class PlayerApp {
         }
     }
 
+
     public JFrame getFrame() {
         return this.frame;
     }
@@ -325,24 +363,22 @@ public class PlayerApp {
             public void mouseClicked(MouseEvent e) {
                 int row = songTable.rowAtPoint(e.getPoint());
                 String songName = (String) songTable.getValueAt(row, 1);
-
-                for (int i = 0;i < myList.getSongs().size();i++) {
-                    if (songName.equals(myList.getSongs().get(i).getName())) {
-                        myList.getSongs().remove(i);
-                        JOptionPane.showMessageDialog(frame, songName + " has been removed!");
-                    } else {
-                        System.out.println("I couldn't find a song with this name:" + name);
-                        break;
-                    }
-                }
+                myList.removeSong(songName);
+                JOptionPane.showMessageDialog(frame, songName + " has been removed!");
                 if (row >= 0) {
                     tableModel.removeRow(row);
                 }
             }
         });
+    }
 
-
-
+    public void printLog(EventLog el) throws IOException {
+        for (Event next : el) {
+            fw.write(next.toString());
+            fw.write("\n\n");
+        }
+        fw.flush();
+        fw.close();
     }
 
 }

@@ -1,13 +1,9 @@
 package ui;
 
+import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class AudioPlayer {
 
@@ -64,7 +60,6 @@ public class AudioPlayer {
             clip.setMicrosecondPosition(currentFrame);
             this.play(filePath);
         }
-
     }
 
     // Method to restart the audio
@@ -81,7 +76,6 @@ public class AudioPlayer {
     // Method to stop the audio
     public void stop() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         System.out.println("Song has been Stopped");
-
         currentFrame = 0L;
         clip.stop();
         clip.close();
@@ -112,6 +106,5 @@ public class AudioPlayer {
         clip.open(audioInputStream);
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
+
 }
-
-

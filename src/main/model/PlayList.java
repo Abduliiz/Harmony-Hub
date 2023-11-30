@@ -17,7 +17,6 @@ public class PlayList implements Writable {
     public PlayList(String name) {
         this.songs = new ArrayList<>();
         this.name = name;
-
     }
 
     public String getName() {
@@ -36,7 +35,20 @@ public class PlayList implements Writable {
     // EFFECTS: adds a song to a playlist
     public List<Song> addSong(Song song) {
         this.songs.add(song);
+        EventLog.getInstance().logEvent(new Event("Added song: " + song + "To: " + this.name));
         return this.songs;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: adds a song to a playlist
+    public void removeSong(String song) {
+        for (int i = 0;i < songs.size();i++) {
+            if (song.equals(songs.get(i).getName())) {
+                songs.remove(i);
+                EventLog.getInstance().logEvent(new Event("Removed: " + song + "From: " + this.name));
+            }
+        }
+
     }
 
     // EFFECTS: Turns playlist into a json file
