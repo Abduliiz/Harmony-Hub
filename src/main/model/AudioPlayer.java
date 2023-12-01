@@ -1,10 +1,12 @@
-package ui;
+package model;
 
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
+// Represents an audio handler class that handles audios streams from local audio files
+// that are strictly non MP3 files.
 public class AudioPlayer {
 
     // to store current position
@@ -33,28 +35,28 @@ public class AudioPlayer {
         this.filePath = path;
         clip.start();
         status = "play";
+        EventLog.getInstance().logEvent(new Event("Started Playing a Song"));
+
     }
 
     // Method to pause the audio
     public void pause() {
+        EventLog.getInstance().logEvent(new Event("Song Paused"));
         if (status.equals("paused")) {
             System.out.println("Song is already paused");
         } else {
-            System.out.println("Song has been paused");
             this.currentFrame = this.clip.getMicrosecondPosition();
             clip.stop();
             status = "paused";
         }
-
     }
 
     // Method to resume the audio
     public void resumeAudio() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-
+        EventLog.getInstance().logEvent(new Event("Song Resumed"));
         if (status.equals("play")) {
             System.out.println("Audio is already " + "being played");
         } else {
-            System.out.println("Song has been resumed");
             clip.close();
             resetAudioStream();
             clip.setMicrosecondPosition(currentFrame);
@@ -64,7 +66,7 @@ public class AudioPlayer {
 
     // Method to restart the audio
     public void restart() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
-        System.out.println("Song has been restarted!");
+        EventLog.getInstance().logEvent(new Event("Song Restarted"));
         clip.stop();
         clip.close();
         resetAudioStream();
@@ -75,7 +77,7 @@ public class AudioPlayer {
 
     // Method to stop the audio
     public void stop() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        System.out.println("Song has been Stopped");
+        EventLog.getInstance().logEvent(new Event("Song Stopped"));
         currentFrame = 0L;
         clip.stop();
         clip.close();

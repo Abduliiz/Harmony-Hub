@@ -72,3 +72,34 @@ buttons for the other actions
 - You can locate my visual component by looking at the frame
 - You can save the state of my application by pressing the "Save" button
 - You can reload the state of my application by pressing the "Load" button
+
+
+
+### Phase 4: Task 2
+
+_this is a sample of what the EventLogs may look like:_
+
+```
+---------------EVENT LOG---------------
+Added song: Gesaffelstein, To: My PlayList   Thu Nov 30 22:37:04 PST 2023
+Started Playing a Song   Thu Nov 30 22:37:07 PST 2023
+Song Resumed   Thu Nov 30 22:37:12 PST 2023
+Song Resumed   Thu Nov 30 22:37:13 PST 2023
+Song Resumed   Thu Nov 30 22:37:14 PST 2023
+Song Paused   Thu Nov 30 22:37:15 PST 2023
+Song Resumed   Thu Nov 30 22:37:17 PST 2023
+Started Playing a Song   Thu Nov 30 22:37:17 PST 2023
+Song Paused   Thu Nov 30 22:37:18 PST 2023
+Song Resumed   Thu Nov 30 22:37:19 PST 2023
+Started Playing a Song   Thu Nov 30 22:37:19 PST 2023
+Song Paused   Thu Nov 30 22:37:20 PST 2023
+Removed: Gesaffelstein, From: My PlayList   Thu Nov 30 22:37:29 PST 2023
+```
+
+
+### Phase 4: Task 3
+
+To improve my program design, I would refactor the PlayerApp and the AudioPlayer Classes into 
+many subclasses because there are so much functionality crammed in those two classes unlike my PlayList or Song classes.
+I Would also improve my exception handling and try to implement some of the new design patterns we have learned 
+in the last three weeks of the course.

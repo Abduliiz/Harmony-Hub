@@ -1,9 +1,7 @@
 package ui;
 
+import model.*;
 import model.Event;
-import model.EventLog;
-import model.PlayList;
-import model.Song;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -13,14 +11,13 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
 
-// MP3 player application
+// Audio player application
 public class PlayerApp {
     private JFrame frame;
     private JButton addSongButton;
@@ -108,12 +105,10 @@ public class PlayerApp {
 
     private void initialWindow() {
         this.frame.addWindowListener(new WindowAdapter() {
-
             public void windowClosing(WindowEvent e) {
-                try {
-                    EventLog.getInstance().foreach();
-                } catch (IOException ex) {
-                    System.out.println("Couldnt print log");
+                System.out.println("---------------EVENT LOG---------------");
+                for (Event event : EventLog.getInstance()) {
+                    System.out.println(event.getDescription() + "   " + event.getDate());
                 }
                 frame.dispose();
             }
@@ -170,7 +165,7 @@ public class PlayerApp {
                     } catch (LineUnavailableException ex) {
                         JOptionPane.showMessageDialog(frame, "Error!");
                     } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(frame, "Something went Wrong!");
+                        System.out.println("Something went Wrong!");
                     }
                 }
             }
@@ -362,7 +357,7 @@ public class PlayerApp {
         songTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 int row = songTable.rowAtPoint(e.getPoint());
-                String songName = (String) songTable.getValueAt(row, 1);
+                String songName = (String) songTable.getValueAt(row, 0);
                 myList.removeSong(songName);
                 JOptionPane.showMessageDialog(frame, songName + " has been removed!");
                 if (row >= 0) {
@@ -370,15 +365,6 @@ public class PlayerApp {
                 }
             }
         });
-    }
-
-    public void printLog(EventLog el) throws IOException {
-        for (Event next : el) {
-            fw.write(next.toString());
-            fw.write("\n\n");
-        }
-        fw.flush();
-        fw.close();
     }
 
 }

@@ -1,10 +1,33 @@
 {
-    "songs": [{
-        "path": "/Users/tdscholar/Desktop/Gesaffelstein & The Weeknd - Lost in the Fire (Official Video).wav",
-        "artist": "The Weekend",
-        "name": "Gesaffelstein",
-        "format": ".WAV",
-        "rating": 10
-    }],
+    "songs": [
+        {
+            "path": "/Users/tdscholar/Desktop/Samer - World Goes Blind.wav",
+            "artist": "Samer",
+            "name": "World Goes Blind",
+            "format": ".WAV",
+            "rating": 10
+        },
+        {
+            "path": "/Users/tdscholar/Desktop/017.wav",
+            "artist": "me",
+            "name": "IDK TBH Test",
+            "format": ".WAV",
+            "rating": 1
+        },
+        {
+            "path": "/Users/tdscholar/Desktop/champion-80bpm-132686.wav",
+            "artist": "I CAN SEE YOU :)",
+            "name": "Champion",
+            "format": ".WAV",
+            "rating": 5
+        },
+        {
+            "path": "GIT HUB PEOJECT (this wont play music)",
+            "artist": "Marking TA",
+            "name": "Give Me 100 :P",
+            "format": ".WAV",
+            "rating": 10
+        }
+    ],
     "name": "My PlayList"
 }

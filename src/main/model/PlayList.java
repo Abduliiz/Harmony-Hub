@@ -35,7 +35,7 @@ public class PlayList implements Writable {
     // EFFECTS: adds a song to a playlist
     public List<Song> addSong(Song song) {
         this.songs.add(song);
-        EventLog.getInstance().logEvent(new Event("Added song: " + song + "To: " + this.name));
+        EventLog.getInstance().logEvent(new Event("Added song: " + song.getName() + ", To: " + this.name));
         return this.songs;
     }
 
@@ -45,7 +45,7 @@ public class PlayList implements Writable {
         for (int i = 0;i < songs.size();i++) {
             if (song.equals(songs.get(i).getName())) {
                 songs.remove(i);
-                EventLog.getInstance().logEvent(new Event("Removed: " + song + "From: " + this.name));
+                EventLog.getInstance().logEvent(new Event("Removed: " + song + ", From: " + this.name));
             }
         }
 
