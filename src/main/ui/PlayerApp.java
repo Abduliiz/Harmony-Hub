@@ -17,6 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
+
 // Audio player application
 public class PlayerApp {
     private JFrame frame;
@@ -24,6 +25,9 @@ public class PlayerApp {
     private JButton removeSongButton;
     private ImageIcon icon;
     private FileWriter fw;
+
+
+
 
     private JTextField name;
     private JTextField artist;

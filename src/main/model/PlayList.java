@@ -42,7 +42,7 @@ public class PlayList implements Writable {
     // MODIFIES: this
     // EFFECTS: adds a song to a playlist
     public void removeSong(String song) {
-        for (int i = 0;i < songs.size();i++) {
+        for (int i = 0; i < songs.size(); i++) {
             if (song.equals(songs.get(i).getName())) {
                 songs.remove(i);
                 EventLog.getInstance().logEvent(new Event("Removed: " + song + ", From: " + this.name));
