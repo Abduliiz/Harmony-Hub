@@ -103,3 +103,14 @@ To improve my program design, I would refactor the PlayerApp and the AudioPlayer
 many subclasses because there are so much functionality crammed in those two classes unlike my PlayList or Song classes.
 I Would also improve my exception handling and try to implement some of the new design patterns we have learned 
 in the last three weeks of the course.
+
+
+### Project Pictures
+
+<img width="859" alt="Screenshot 2024-08-31 at 4 30 27 PM" src="https://github.com/user-attachments/assets/7e486c59-3a65-435d-8c37-d7ab61f23c0b">
+
+<img width="859" alt="Screenshot 2024-08-31 at 4 30 45 PM" src="https://github.com/user-attachments/assets/3d528dfc-f0de-4e84-975c-768afe5fa703">
+
+
+<img width="859" alt="Screenshot 2024-08-31 at 4 37 52 PM" src="https://github.com/user-attachments/assets/33f18cfc-34e5-436c-81b5-57ebd9c3d76b">
+
